@@ -12,7 +12,12 @@
         </td>
 
         <td class="col-standard list">
-            <input type="text" v-if="option.toChange" v-model="option.name">
+            <input 
+                id="edit"
+                type="text"
+                v-if="option.toChange"
+                v-model="option.name"
+            >
             <p v-bind:class="{ done: option.done }" v-else>
                 {{ option.name }}
             </p>
@@ -53,6 +58,7 @@ export default {
       return {
         newOption: null,
         countList: 0,
+        indexToChange: null,
         actions: [
             {
                 event: 'excluir',
@@ -72,47 +78,50 @@ export default {
         ],
       }
   },
-  computed:{
-      actionsToShow(){
-          if (this.typeList !== 'Done') {
-            let actionsToShow = this.actions.filter(action => action.show == true)
-            return actionsToShow
-          }
-          return []
-      }
+  created() {
+      this.verifyLenght()
   },
   watch:{
-      listToDo(){
-          this.countList = this.listToDo.length
-          if (this.countList === 0){
-              this.listToDo.push({name: 'Não há mais tarefas'})
-              this.actions[0].show = false
-              this.actions[1].show = false
-          } else {
-              this.actions[0].show = true
-              this.actions[1].show = true
-          }
-      },
+    listToDo(){
+        this.verifyLenght()
+    },
+  },
+  computed:{
+    actionsToShow(){
+        if (this.typeList !== 'Done') {
+            let actionsToShow = this.actions.filter(action => action.show == true)
+            return actionsToShow
+        }
+            return []
+        }
   },
   methods: {
-      removeOption(option){
-          let indexToRemove = this.listToDo.indexOf(option)
-          this.listToDo.splice(indexToRemove, 1)
-
+      verifyLenght(){
+        this.countList = this.listToDo.length
+        if (this.countList === 0){
+            this.listToDo.push({name: 'Não há mais tarefas'})
+            this.actions[0].show = false
+            this.actions[1].show = false
+        } else {
+            this.actions[0].show = true
+            this.actions[1].show = true
+        }
       },
       editOption(option){
-          let indexToChange = this.listToDo.indexOf(option)
-          this.listToDo[indexToChange].toChange = true
-          this.actions[1].show = false
-          this.actions[2].show = true
+        this.indexToChange = this.listToDo.indexOf(option)
+        this.listToDo[this.indexToChange].toChange = true
+        this.actions[1].show = false
+        this.actions[2].show = true
+      },
+      removeOption(option){
+        this.$emit('remove', option)
       },
       save(option){
-          let indexToChange = this.listToDo.indexOf(option)
-          this.listToDo[indexToChange].toChange = false
-          this.actions[1].show = true
-          this.actions[2].show = false
+        this.$emit('save', this.indexToChange, option)
+        this.actions[1].show = true
+        this.actions[2].show = false
       },
-  }
+  },
 }
 </script>
 
@@ -165,6 +174,10 @@ input{
     border: 0px;
     border-bottom: 1px tomato;
     box-shadow: 0px 0.2px 0px;
+}
+input#edit{
+    margin-left: -25px;
+    width: 80%;
 }
 
 input:focus{

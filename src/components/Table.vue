@@ -1,11 +1,15 @@
 <template>
   <div>
     <h1>{{ title }}</h1>
-    <input type="text" v-model="newOption">
-    <button class="button-standard" v-on:click="addNewOption">+</button>
+    <input type="text" @keyup.enter="addNewOption" v-model="newOption">
+    <button class="button-standard" @click="addNewOption">+</button>
     <table>
         <tr>
-            <BoxList typeList="To Do" :listToDo.sync="listToDo"/>
+            <BoxList
+                typeList="To Do" :listToDo.sync="listToDo"
+                v-on:save="save"
+                v-on:remove="removeOption"
+            />
         </tr>
         
         <tr>
@@ -52,6 +56,14 @@ export default {
           }
           this.list.push(newOption)
           this.newOption = null
+      },
+      removeOption(option){
+          let indexToRemove = this.list.indexOf(option)
+          this.list.splice(indexToRemove, 1)
+      },
+      save(index, option){
+          this.list[index].toChange = false
+          this.list[index].name = option.name
       },
   }
 }
