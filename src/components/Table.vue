@@ -1,31 +1,31 @@
 <template>
-  <div>
+  <div class="container">
     <h1>{{ title }}</h1>
     <input type="text" @keyup.enter="addNewOption" v-model="newOption">
-    <button class="button-standard" @click="addNewOption">+</button>
+    <button class="button-standard" @click="addNewOption">add</button>
     <table>
         <tr>
-            <BoxList
+            <CheckList
                 typeList="To Do" :listToDo.sync="listToDo"
                 v-on:save="save"
                 v-on:remove="removeOption"
             />
         </tr>
-        
+        <hr />
         <tr>
-            <BoxList typeList="Done" :listToDo.sync="listOfDone"/>
+            <CheckList typeList="Done" :listToDo.sync="listOfDone"/>
         </tr>
     </table>
   </div>
 </template>
 
 <script>
-import BoxList from './BoxList.vue'
+import CheckList from './CheckList.vue'
 
 export default {
   name: 'Table',
   components: {
-    BoxList
+    CheckList
   },
   props: {
     title: {
@@ -71,17 +71,27 @@ export default {
 
 
 <style scoped>
+div.container{
+    margin: 50px;
+}
+
 table{
-    margin: auto;
-    margin-top: 25px;
-    width: 500px;
+    margin: 25px auto;
+    width: 50%;
+}
+
+hr{
+    border-color:#f7f7f769;
+    border-bottom: none;
+    width: 100%;
+    margin: 30px 0;
 }
 
 input{
+    width: 250px;
     padding: 5px;
-    border: 0px;
-    border-bottom: 1px tomato;
-    box-shadow: 0px 0.2px 0px;
+    border: none;
+    box-shadow: 0px 0.2px 0px #6d6d6d;
 }
 
 input:focus{
@@ -93,10 +103,16 @@ input:focus{
 button{
     margin: 5px 10px;
     padding: 5px 10px;
-    color: #323831;
-    background-color: #f2f3ea;
-    border: 0.12pc solid rgb(212, 212, 212);
-    border-radius: 10%;
+    color: #F05226;
+    background-color: #f7f7f7;
+    border: 0.12pc solid #f7f7f7;
+    border-radius: 2em;
+    transition-duration: 0.6s;
+}
+button:hover{
+    color: #f7f7f7;
+    background-color: #F05226;
+    border: 0.12pc solid #F05226;
 }
 
 table tr{

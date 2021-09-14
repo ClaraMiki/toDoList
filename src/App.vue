@@ -1,17 +1,18 @@
 <template>
   <div id="app">
-    <Table/>
+    <Menu />
+    <router-view/>
   </div>
 </template>
 
+
 <script>
-import Table from './components/Table.vue'
+import Menu from './components/Menu.vue'
 
 export default {
-  name: 'App',
   components: {
-    Table
-  }
+    Menu
+  },
 }
 </script>
 
@@ -21,7 +22,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: #3b2323;
+  padding: 0 30px;
 }
 </style>

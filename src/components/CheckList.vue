@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <h2>{{typeList}}</h2>
     <div v-for="option in listToDo" :key="option.name">
         <td class="col-standard checkbox">
             <input
@@ -39,7 +38,7 @@
 
 <script>
 export default {
-  name: 'BoxList',
+  name: 'CheckList',
   props:{
       typeList: {
           type: String,
@@ -72,7 +71,7 @@ export default {
             },
             {
                 event: 'salvar',
-                method: this.save,
+                method: this.saveOption,
                 show: false
             },
         ],
@@ -99,7 +98,7 @@ export default {
       verifyLenght(){
         this.countList = this.listToDo.length
         if (this.countList === 0){
-            this.listToDo.push({name: 'Não há mais tarefas'})
+            this.listToDo.push({name: 'Não há tarefas'})
             this.actions[0].show = false
             this.actions[1].show = false
         } else {
@@ -116,7 +115,7 @@ export default {
       removeOption(option){
         this.$emit('remove', option)
       },
-      save(option){
+      saveOption(option){
         this.$emit('save', this.indexToChange, option)
         this.actions[1].show = true
         this.actions[2].show = false
@@ -129,12 +128,7 @@ export default {
 <style scoped>
 .container{
     width: 100%;
-    margin: 0;
-}
-
-h2{
-    text-align: initial;
-    padding: 10px;
+    margin: 0px;
 }
 
 p{
@@ -144,6 +138,10 @@ p{
 p.done{
     text-decoration-line: line-through;
     text-decoration-color: white;
+}
+
+img{
+    width: 14px;
 }
 
 .col-standard{
@@ -157,13 +155,13 @@ td.checkbox{
     width: 5%;
 }
 td.action{
-    width: 150px;
+    width: 20%;
 }
 
 button.actions{
     margin: 5px;
     padding: 5px 10px;
-    color: #818a78;
+    color: #E3924B;
     text-decoration-line: underline;
     background-color: rgba(255, 255, 255, 0);
     border: none;
